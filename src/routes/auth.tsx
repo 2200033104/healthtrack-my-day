@@ -48,8 +48,8 @@ function AuthPage() {
     const email = String(form.get("email") ?? "").trim();
     const password = String(form.get("password") ?? "");
     const next: Record<string, string> = {};
-    if (!email) next.email = "Email is required";
-    if (!password) next.password = "Password is required";
+    if (!email) next["email"] = "Email is required";
+    if (!password) next["password"] = "Password is required";
     setErrors(next);
     if (Object.keys(next).length) return;
 
@@ -74,10 +74,10 @@ function AuthPage() {
     const confirm = String(form.get("confirm") ?? "");
 
     const next: Record<string, string> = {};
-    if (!fullName) next.full_name = "Full name is required";
-    if (!email) next.email = "Email is required";
-    if (password.length < 6) next.password = "Password must be at least 6 characters";
-    if (password !== confirm) next.confirm = "Passwords do not match";
+    if (!fullName) next["full_name"] = "Full name is required";
+    if (!email) next["email"] = "Email is required";
+    if (password.length < 6) next["password"] = "Password must be at least 6 characters";
+    if (password !== confirm) next["confirm"] = "Passwords do not match";
     setErrors(next);
     if (Object.keys(next).length) return;
 
@@ -127,10 +127,10 @@ function AuthPage() {
 
               <TabsContent value="login">
                 <form className="space-y-4" onSubmit={handleLogin}>
-                  <Field label="Email" error={errors.email}>
+                  <Field label="Email" error={errors["email"]}>
                     <Input name="email" type="email" placeholder="you@example.com" />
                   </Field>
-                  <Field label="Password" error={errors.password}>
+                  <Field label="Password" error={errors["password"]}>
                     <Input name="password" type="password" placeholder="••••••••" />
                   </Field>
                   <Button type="submit" className="w-full" disabled={loading}>
@@ -141,7 +141,7 @@ function AuthPage() {
 
               <TabsContent value="signup">
                 <form className="space-y-4" onSubmit={handleSignup}>
-                  <Field label="Full Name" error={errors.full_name}>
+                  <Field label="Full Name" error={errors["full_name"]}>
                     <Input name="full_name" placeholder="Jane Doe" />
                   </Field>
                   <Field label="Gender (optional)">
@@ -159,13 +159,13 @@ function AuthPage() {
                       </SelectContent>
                     </Select>
                   </Field>
-                  <Field label="Email" error={errors.email}>
+                  <Field label="Email" error={errors["email"]}>
                     <Input name="email" type="email" placeholder="you@example.com" />
                   </Field>
-                  <Field label="Password" error={errors.password}>
+                  <Field label="Password" error={errors["password"]}>
                     <Input name="password" type="password" placeholder="••••••••" />
                   </Field>
-                  <Field label="Confirm Password" error={errors.confirm}>
+                  <Field label="Confirm Password" error={errors["confirm"]}>
                     <Input name="confirm" type="password" placeholder="••••••••" />
                   </Field>
                   <Button type="submit" className="w-full" disabled={loading}>
@@ -187,7 +187,7 @@ function Field({
   children,
 }: {
   label: string;
-  error?: string;
+  error?: string | undefined;
   children: React.ReactNode;
 }) {
   return (
