@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -61,7 +61,12 @@ function TrackerPage() {
   const [water, setWater] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const loadedFor = useRef<string | null>(null);
+
   useEffect(() => {
+    if (recordQuery.isLoading) return;
+    if (loadedFor.current === date) return;
+    loadedFor.current = date;
     const rec = recordQuery.data;
     setSteps(rec?.steps != null ? String(rec.steps) : "");
     setSleep(rec?.sleep_hours != null ? String(rec.sleep_hours) : "");
@@ -69,7 +74,7 @@ function TrackerPage() {
     setWorkoutType(rec?.workout_type ?? "");
     setWater(rec?.water_litres != null ? String(rec.water_litres) : "");
     setErrors({});
-  }, [recordQuery.data, date]);
+  }, [recordQuery.data, recordQuery.isLoading, date]);
 
   const saveDaily = useMutation({
     mutationFn: async () => {
